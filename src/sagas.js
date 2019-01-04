@@ -32,7 +32,6 @@ function* reshuffleCards( { deckId } ) {
 
 function* drawCardOne( { deckId } ) {
   const response = yield call(drawCardsApi, deckId);
-
   if(response.data && response.status){
     yield put({ type: 'DRAW_CARDS_ONE_SUCCESS', data : response.data.cards });
   }else{
