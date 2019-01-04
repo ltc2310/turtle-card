@@ -5,9 +5,9 @@ export class Player extends React.Component {
 
     renderContent = () => {
         const { cards, showCardContent } = this.props;
-       if(showCardContent === ''){
+        if(showCardContent === ''){
            return null;
-       }else if(showCardContent === 'drawed'){
+        }else if(showCardContent === 'drawed'){
            return (
             <div style={{paddingTop : 10}}>
                 <Row>
@@ -23,7 +23,7 @@ export class Player extends React.Component {
                 </Row>             
             </div>
            );
-       }else if(showCardContent === 'showed' && cards){
+       }else if(showCardContent === 'showed' && cards.length > 0){
         return (
             <div style={{paddingTop : 10}}>
              <Row>
@@ -44,13 +44,14 @@ export class Player extends React.Component {
 
     render(){
         const { title, style } = this.props;
+        const content = this.renderContent();
         return (
             <Card
             title={title}
             style={style}
             >
                 <Avatar size={64} icon="user" />
-                { this.renderContent() }
+                { content }
           </Card>
         );
     }
