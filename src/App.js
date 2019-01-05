@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import { connect } from 'react-redux';
-import { Button, Card, Spin, Row, Col, notification } from 'antd';
+import { Button, Card, Spin, Row, Col, Modal } from 'antd';
 import  { Player, HeaderScore }  from './components';
 import { calculateScore } from './utils/calculateScore';
 import { findMaxElementInArray, finIndexOfMaxValueInArray } from './utils/calculatePoint';
@@ -25,6 +25,22 @@ class App extends Component {
     };
   }
 
+  resetState = () => {
+    this.setState({
+      showCardContent: '',
+      round : 1,
+      score1: 0,
+      score2: 0,
+      score3: 0,
+      score4: 0,
+      isEndRound: false,
+      highestScore: 0,
+      winnerPlayers: [],
+      isDrawed: false,
+      isEndGame: false,
+    })
+  }
+
   componentDidMount(){
     this.props.getDeckId();
   }
@@ -39,7 +55,7 @@ class App extends Component {
     }
 
     if(isEndGame){
-      alert('The game is ended!');
+      alert('The game is ended! Click show result to find the winner');
       return
     }
     this.props.shuffleCards(deckId);
@@ -55,7 +71,7 @@ class App extends Component {
     const { isEndRound, isDrawed, isEndGame } = this.state;
 
     if(isEndGame){
-      alert('The game is ended!');
+      alert('The game is ended! Click show result to find the winner');
       return
     }
     
@@ -80,12 +96,17 @@ class App extends Component {
   }
 
   onRevealClick = () => {
-    const { round, isEndRound, isDrawed } = this.state;
+    const { round, isEndRound, isDrawed, isEndGame } = this.state;
 
     if(round === 5){
       this.setState({
         isEndGame : true
       });
+    }
+
+    if(isEndGame){
+      alert('The game is ended! Click show result to find the winner');
+      return
     }
 
     if(!isDrawed){
@@ -174,7 +195,7 @@ class App extends Component {
       score4,
       isEndGame
       } = this.state;
-    
+
     if(isEndGame){
       const highestScore = findMaxElementInArray([score1, score2, score3, score4]);
 
@@ -197,47 +218,40 @@ class App extends Component {
         this.setState({
           winnerPlayers: winnerPlayersArr,
           highestScore
-        })
+        }, this.showModal )
       }
     }
   }
 
-  componentDidUpdate(){
-    this.renderCongratulationWinner();
+  onShowResult = () => {
+    const {isEndGame} = this.state;
+    if(!isEndGame){
+      alert('We are in game. You can see the result after 5 round');
+      return
+    }
+    this.getWinnerPlayer();
   }
 
-  renderCongratulationWinner = () => {
+  showModal = () => {
     const {  
       highestScore,
       winnerPlayers,
       isEndGame,
      } = this.state;
 
-    this.getWinnerPlayer();
+     let that = this;
 
-    if(isEndGame && highestScore > 0 && winnerPlayers.length > 0){
+     if(isEndGame && highestScore > 0 && winnerPlayers.length > 0){
+
       const theHightestScore = highestScore > 0 ? highestScore : '';
       const winners = winnerPlayers.length > 0 ? winnerPlayers.toString() : '';
   
-      notification.open({
-        message: `Congratulations ${winners} win the game with highest score ${theHightestScore}`,
-        onClick: () => {
+      Modal.info({
+        title: `Congratulations ${winners} win the game with highest score ${theHightestScore}`,
+        onOk(){
+          that.resetState()
         },
-      });
-
-      this.setState({
-        showCardContent: '',
-        round : 1,
-        score1: 0,
-        score2: 0,
-        score3: 0,
-        score4: 0,
-        isEndRound: false,
-        highestScore: 0,
-        winnerPlayers: [],
-        isDrawed: false,
-        isEndGame: false,
-    })
+      }); 
     }
   }
 
@@ -324,6 +338,9 @@ class App extends Component {
             </div>
             <div style={{paddingLeft: 10, display : 'inline-block'}}>
             <Button type='primary' onClick={this.onRevealClick}>Reveal</Button>
+            </div>
+            <div style={{paddingLeft: 10, display : 'inline-block'}}>
+            <Button type='primary' onClick={this.onShowResult} >Show Result</Button>
             </div>
           </div>
         </Card>
