@@ -80,7 +80,6 @@ class App extends Component {
 
   onRevealClick = () => {
     const { round, isEndRound, isDrawed } = this.state;
-    console.log('round', round);
 
     if(!isDrawed){
       alert('Please draw cards for all players');
