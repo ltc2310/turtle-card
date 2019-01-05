@@ -106,10 +106,10 @@ class App extends Component {
     const { playerOneCards, playerTwoCards, playerThreeCards, playerFourCards } = this.props;
     const {score1, score2, score3, score4 } = this.state;
 
-    const playerOneScore = playerOneCards.length > 0 && calculateScore(playerOneCards[0].value, playerOneCards[1].value, playerOneCards[2].value);
-    const playerTwoScore = playerTwoCards > 0 && calculateScore(playerTwoCards[0].value, playerTwoCards[1].value, playerTwoCards[2].value);
-    const playerThreeScore = playerThreeCards > 0 && calculateScore(playerThreeCards[0].value, playerThreeCards[1].value, playerThreeCards[2].value);
-    const playerFourScore = playerFourCards > 0 && calculateScore(playerFourCards[0].value, playerFourCards[1].value, playerFourCards[2].value);
+    const playerOneScore = calculateScore(playerOneCards[0].value, playerOneCards[1].value, playerOneCards[2].value);
+    const playerTwoScore = calculateScore(playerTwoCards[0].value, playerTwoCards[1].value, playerTwoCards[2].value);
+    const playerThreeScore = calculateScore(playerThreeCards[0].value, playerThreeCards[1].value, playerThreeCards[2].value);
+    const playerFourScore = calculateScore(playerFourCards[0].value, playerFourCards[1].value, playerFourCards[2].value);
 
     const arrayScore = [playerOneScore , playerTwoScore, playerThreeScore, playerFourScore];
 
@@ -170,9 +170,7 @@ class App extends Component {
     
     if(round === 6){
       const highestScore = findMaxElementInArray([score1, score2, score3, score4]);
-      this.setState({
-        highestScore
-      })
+
       const winners = finIndexOfMaxValueInArray([score1, score2, score3, score4], highestScore);
 
       let winnerPlayersArr = []
@@ -182,24 +180,56 @@ class App extends Component {
         if(winner === 0){
           winnerPlayersArr.push('player 1')
           this.setState({
-            winnerPlayers: winnerPlayersArr
+            winnerPlayers: winnerPlayersArr,
+            highestScore
           })
         }else if(winner === 1){
           winnerPlayersArr.push('player 2')
           this.setState({
-            winnerPlayers: winnerPlayersArr
+            winnerPlayers: winnerPlayersArr,
+            highestScore
           })
         }else if(winner === 2){
           winnerPlayersArr.push('player 3')
           this.setState({
-            winnerPlayers: winnerPlayersArr
+            winnerPlayers: winnerPlayersArr,
+            highestScore
           })
         }else if(winner === 3){
           winnerPlayersArr.push('player 4')
           this.setState({
-            winnerPlayers: winnerPlayersArr
+            winnerPlayers: winnerPlayersArr,
+            highestScore
           })
         }
+      }else if(winners.length > 0){
+        winners.forEach(i => {
+          if(i === 0){
+            winnerPlayersArr.push('player 1')
+            this.setState({
+            winnerPlayers: winnerPlayersArr,
+            highestScore
+          })
+          }else if(i === 1){
+            winnerPlayersArr.push('player 2')
+            this.setState({
+            winnerPlayers: winnerPlayersArr,
+            highestScore
+          })
+          }else if(i === 2){
+            winnerPlayersArr.push('player 3')
+            this.setState({
+            winnerPlayers: winnerPlayersArr,
+            highestScore
+          })
+          }else if(i === 3){
+            winnerPlayersArr.push('player 4')
+            this.setState({
+            winnerPlayers: winnerPlayersArr,
+            highestScore
+          })
+          }
+        });
       }
     }
   }
