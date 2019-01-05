@@ -21,6 +21,7 @@ class App extends Component {
       highestScore: 0,
       winnerPlayers: [],
       isDrawed: false,
+      isEndGame: false,
     };
   }
 
@@ -30,14 +31,14 @@ class App extends Component {
 
   onShuffleClick = () => {
     const { deckId } = this.props;
-    const { round, isDrawed } = this.state;
+    const { isEndGame, isDrawed } = this.state;
 
     if(isDrawed){
       alert('We are in game!');
       return
     }
 
-    if(round === 6){
+    if(isEndGame){
       alert('The game is ended!');
       return
     }
@@ -51,9 +52,9 @@ class App extends Component {
 
   onDrawClick = () => {
     const { deckId  } = this.props;
-    const { isEndRound, isDrawed, round } = this.state;
+    const { isEndRound, isDrawed, isEndGame } = this.state;
 
-    if(round === 6){
+    if(isEndGame){
       alert('The game is ended!');
       return
     }
@@ -81,6 +82,12 @@ class App extends Component {
   onRevealClick = () => {
     const { round, isEndRound, isDrawed } = this.state;
 
+    if(round === 5){
+      this.setState({
+        isEndGame : true
+      });
+    }
+
     if(!isDrawed){
       alert('Please draw cards for all players');
       return;
@@ -99,13 +106,13 @@ class App extends Component {
       isDrawed: false
     });
 
-    this.calculatePointForPlayers();
+    this.calculatePointForPlayers();   
   }
 
   calculatePointForPlayers = () => {
-    const { playerOneCards, playerTwoCards, playerThreeCards, playerFourCards } = this.props;
+    const { playerOneCards, playerTwoCards, playerThreeCards, playerFourCards, state} = this.props;
     const {score1, score2, score3, score4 } = this.state;
-
+    
     const playerOneScore = calculateScore(playerOneCards[0].value, playerOneCards[1].value, playerOneCards[2].value);
     const playerTwoScore = calculateScore(playerTwoCards[0].value, playerTwoCards[1].value, playerTwoCards[2].value);
     const playerThreeScore = calculateScore(playerThreeCards[0].value, playerThreeCards[1].value, playerThreeCards[2].value);
@@ -165,85 +172,46 @@ class App extends Component {
       score2, 
       score3, 
       score4,
-      round
+      isEndGame
       } = this.state;
     
-    if(round === 6){
+    if(isEndGame){
       const highestScore = findMaxElementInArray([score1, score2, score3, score4]);
 
       const winners = finIndexOfMaxValueInArray([score1, score2, score3, score4], highestScore);
 
       let winnerPlayersArr = []
 
-      if(winners.length === 1){
-        const winner = winners[0]
-        if(winner === 0){
-          winnerPlayersArr.push('player 1')
-          this.setState({
-            winnerPlayers: winnerPlayersArr,
-            highestScore
-          })
-        }else if(winner === 1){
-          winnerPlayersArr.push('player 2')
-          this.setState({
-            winnerPlayers: winnerPlayersArr,
-            highestScore
-          })
-        }else if(winner === 2){
-          winnerPlayersArr.push('player 3')
-          this.setState({
-            winnerPlayers: winnerPlayersArr,
-            highestScore
-          })
-        }else if(winner === 3){
-          winnerPlayersArr.push('player 4')
-          this.setState({
-            winnerPlayers: winnerPlayersArr,
-            highestScore
-          })
-        }
-      }else if(winners.length > 0){
+      if(winners.length > 0){
         winners.forEach(i => {
           if(i === 0){
             winnerPlayersArr.push('player 1')
-            this.setState({
-            winnerPlayers: winnerPlayersArr,
-            highestScore
-          })
           }else if(i === 1){
             winnerPlayersArr.push('player 2')
-            this.setState({
-            winnerPlayers: winnerPlayersArr,
-            highestScore
-          })
           }else if(i === 2){
             winnerPlayersArr.push('player 3')
-            this.setState({
-            winnerPlayers: winnerPlayersArr,
-            highestScore
-          })
           }else if(i === 3){
             winnerPlayersArr.push('player 4')
-            this.setState({
-            winnerPlayers: winnerPlayersArr,
-            highestScore
-          })
           }
         });
+        this.setState({
+          winnerPlayers: winnerPlayersArr,
+          highestScore
+        })
       }
     }
   }
 
   renderCongratulationWinner = () => {
-    const { 
-      round, 
+    const {  
       highestScore,
-      winnerPlayers
+      winnerPlayers,
+      isEndGame,
      } = this.state;
 
     this.getWinnerPlayer();
 
-    if(round === 6 && highestScore > 0 && winnerPlayers.length > 0){
+    if(isEndGame && highestScore > 0 && winnerPlayers.length > 0){
       const theHightestScore = highestScore > 0 ? highestScore : '';
       const winners = winnerPlayers.length > 0 ? winnerPlayers.toString() : '';
   
@@ -259,6 +227,7 @@ class App extends Component {
         highestScore: 0,
         winnerPlayers: [],
         isDrawed: false,
+        isEndGame: false
     })
       return;
     }else{
