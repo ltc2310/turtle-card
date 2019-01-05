@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import { connect } from 'react-redux';
-import { Button, Card, Spin, Row, Col } from 'antd';
+import { Button, Card, Spin, Row, Col, notification } from 'antd';
 import  { Player, HeaderScore }  from './components';
 import { calculateScore } from './utils/calculateScore';
 import { findMaxElementInArray, finIndexOfMaxValueInArray } from './utils/calculatePoint';
@@ -202,6 +202,10 @@ class App extends Component {
     }
   }
 
+  componentDidUpdate(){
+    this.renderCongratulationWinner();
+  }
+
   renderCongratulationWinner = () => {
     const {  
       highestScore,
@@ -215,7 +219,12 @@ class App extends Component {
       const theHightestScore = highestScore > 0 ? highestScore : '';
       const winners = winnerPlayers.length > 0 ? winnerPlayers.toString() : '';
   
-      alert(`Congratulations ${winners} win the game with highest score ${theHightestScore}`);
+      notification.open({
+        message: `Congratulations ${winners} win the game with highest score ${theHightestScore}`,
+        onClick: () => {
+        },
+      });
+
       this.setState({
         showCardContent: '',
         round : 1,
@@ -227,10 +236,8 @@ class App extends Component {
         highestScore: 0,
         winnerPlayers: [],
         isDrawed: false,
-        isEndGame: false
+        isEndGame: false,
     })
-    }else{
-      return null;
     }
   }
 
@@ -242,17 +249,15 @@ class App extends Component {
       score2, 
       score3, 
       score4,
-      } = this.state;
+    } = this.state;
 
     const cardsOfPlayerOne = showCardContent === 'showed' && playerOneCards;
     const cardsOfPlayerTwo = showCardContent === 'showed' && playerTwoCards;
     const cardsOfPlayerThree = showCardContent === 'showed' && playerThreeCards;
     const cardsOfPlayerFour = showCardContent === 'showed' && playerFourCards;
-    const renderWinnerName = this.renderCongratulationWinner();
    
     return (
       <React.Fragment>
-         {renderWinnerName}
           <Card
           title='Game Turtle Card'
         >
