@@ -51,19 +51,19 @@ export function reducer(state = initialState, action) {
     case DRAW_CARDS_ONE:
       return { ...state, loading: true };
     case DRAW_CARDS_ONE_SUCCESS:
-      return { ...state, loading: false, playerOneCards : action.data };
+      return { ...state, playerOneCards : action.data };
     case DRAW_CARDS_ONE_FAIL:
       return { ...state, loading: false, error : action.error };
     case DRAW_CARDS_TWO:
       return { ...state, loading: true };
     case DRAW_CARDS_TWO_SUCCESS:
-      return { ...state, loading: false, playerTwoCards : action.data };
+      return { ...state, playerTwoCards : action.data };
     case DRAW_CARDS_TWO_FAIL:
       return { ...state, loading: false, error : action.error };
     case DRAW_CARDS_THREE:
       return { ...state, loading: true };
     case DRAW_CARDS_THREE_SUCCESS:
-      return { ...state, loading: false, playerTreeCards : action.data };
+      return { ...state, playerTreeCards : action.data };
     case DRAW_CARDS_THREE_FAIL:
       return { ...state, loading: false, error : action.error };
     case DRAW_CARDS_FOUR:

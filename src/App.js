@@ -110,9 +110,9 @@ class App extends Component {
   }
 
   calculatePointForPlayers = () => {
-    const { playerOneCards, playerTwoCards, playerThreeCards, playerFourCards, state} = this.props;
+    const { playerOneCards, playerTwoCards, playerThreeCards, playerFourCards} = this.props;
     const {score1, score2, score3, score4 } = this.state;
-    
+
     const playerOneScore = calculateScore(playerOneCards[0].value, playerOneCards[1].value, playerOneCards[2].value);
     const playerTwoScore = calculateScore(playerTwoCards[0].value, playerTwoCards[1].value, playerTwoCards[2].value);
     const playerThreeScore = calculateScore(playerThreeCards[0].value, playerThreeCards[1].value, playerThreeCards[2].value);
@@ -229,7 +229,6 @@ class App extends Component {
         isDrawed: false,
         isEndGame: false
     })
-      return;
     }else{
       return null;
     }
