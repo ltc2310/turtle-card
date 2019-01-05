@@ -170,9 +170,7 @@ class App extends Component {
     
     if(round === 6){
       const highestScore = findMaxElementInArray([score1, score2, score3, score4]);
-      this.setState({
-        highestScore
-      })
+
       const winners = finIndexOfMaxValueInArray([score1, score2, score3, score4], highestScore);
 
       let winnerPlayersArr = []
@@ -182,24 +180,56 @@ class App extends Component {
         if(winner === 0){
           winnerPlayersArr.push('player 1')
           this.setState({
-            winnerPlayers: winnerPlayersArr
+            winnerPlayers: winnerPlayersArr,
+            highestScore
           })
         }else if(winner === 1){
           winnerPlayersArr.push('player 2')
           this.setState({
-            winnerPlayers: winnerPlayersArr
+            winnerPlayers: winnerPlayersArr,
+            highestScore
           })
         }else if(winner === 2){
           winnerPlayersArr.push('player 3')
           this.setState({
-            winnerPlayers: winnerPlayersArr
+            winnerPlayers: winnerPlayersArr,
+            highestScore
           })
         }else if(winner === 3){
           winnerPlayersArr.push('player 4')
           this.setState({
-            winnerPlayers: winnerPlayersArr
+            winnerPlayers: winnerPlayersArr,
+            highestScore
           })
         }
+      }else if(winners.length > 0){
+        winners.forEach(i => {
+          if(i === 0){
+            winnerPlayersArr.push('player 1')
+            this.setState({
+            winnerPlayers: winnerPlayersArr,
+            highestScore
+          })
+          }else if(i === 1){
+            winnerPlayersArr.push('player 2')
+            this.setState({
+            winnerPlayers: winnerPlayersArr,
+            highestScore
+          })
+          }else if(i === 2){
+            winnerPlayersArr.push('player 3')
+            this.setState({
+            winnerPlayers: winnerPlayersArr,
+            highestScore
+          })
+          }else if(i === 3){
+            winnerPlayersArr.push('player 4')
+            this.setState({
+            winnerPlayers: winnerPlayersArr,
+            highestScore
+          })
+          }
+        });
       }
     }
   }
